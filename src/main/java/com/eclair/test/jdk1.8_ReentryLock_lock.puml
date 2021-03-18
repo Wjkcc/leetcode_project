@@ -1,0 +1,18 @@
+@startuml
+:new ReentryLock();
+:内部类Sync sync继承aqs(AbstractQueuedSynchronizer);
+:实例化一个非公平锁 sync = new NonfairSync();
+:sync.lock();
+:先进行cas操作，compareAndSetState(int expect, int update);
+if(成功修改state为update，并且expect不变) then
+:把当前调用线程设置为独占线程;
+:setExclusiveOwnerThread(Thread.currentThread());
+else
+:获取state;
+: acquire(1);
+ :if (!tryAcquire(arg) &&acquireQueued(addWaiter(Node.EXCLUSIVE), arg));
+  :          selfInterrupt();
+ :尝试获取state,失败把线程放到线程等待队列，当前线程中断;
+endif
+
+@enduml

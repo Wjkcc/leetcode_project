@@ -120,7 +120,7 @@ public class Test_20210401_栈和队列_递归 {
             }
         }
         public  T pop() {
-            if (!push.isEmpty()) {
+            if (!push.isEmpty() && pop.isEmpty()) {
                 pushToPop();
             }
             if (pop.isEmpty()) {
